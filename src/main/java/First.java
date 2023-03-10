@@ -3,7 +3,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class First {
-    public static void main(String arg[]){
+    public static void first(){
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         String sDate = sdf.format(date);

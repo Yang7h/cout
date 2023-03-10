@@ -8,5 +8,6 @@ import java.io.IOException;
 
 public class Culculation {
     public static void main (String[] arg) {
+        First.first();
     }
 }
