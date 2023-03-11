@@ -1,30 +1,58 @@
 
+import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.TimeZone;
+import java.util.*;
 
-public  class active {
+public  class Active {
     @Test
-    public void second() throws Exception{
+    public static void second() throws Exception{
+        //日期
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd");
         String format = sdf.format(date);
         int day =Integer.parseInt(format);
-        InputStream fs= new FileInputStream("C:\\Users\\正经的电脑\\Desktop\\2023年3月份每日销售统计表.xls");
+
+        //文件流
+        InputStream fs= new FileInputStream("C:\\Users\\admin\\Desktop\\2023年3月份每日销售统计表.xls");
         BufferedInputStream bis = new BufferedInputStream(fs);
         Workbook workbook = new HSSFWorkbook(bis);
         Sheet sheet = workbook.getSheetAt(0);
+
+        //公式格式化
+        HSSFFormulaEvaluator formulaEvaluator = new HSSFFormulaEvaluator((HSSFWorkbook) workbook);
+
+        //总销售
+        Cell cell = sheet.getRow(21 + (3 * 36) - 36 - 1).getCell(1);
+        CellValue evaluate = formulaEvaluator.evaluate(cell);
+        double sell = Double.parseDouble(evaluate.formatAsString());
+        System.out.println("总销售:"+sell/10);
+
+        //素金
+        Cell cellSj = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(204);
+        CellValue evaluateSJ = formulaEvaluator.evaluate(cellSj);
+        double sellSj = Double.parseDouble(evaluateSJ.formatAsString());
+        System.out.println("素金："+sellSj/10);
+
+        //非素
+        Cell cellFs = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(205);
+        CellValue evaluateFs = formulaEvaluator.evaluate(cellFs);
+        double sellFs = Double.parseDouble(evaluateFs.formatAsString());
+        System.out.println("非素："+sellFs/10);
+
+        //非素比
+        Cell cellFsb = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(206);
+        CellValue evaluateFsb = formulaEvaluator.evaluate(cellFsb);
+        double sellFsb = Double.parseDouble(evaluateFsb.formatAsString());
+        System.out.println("非素比："+String.format("%.2f", sellFsb*100)+"%");
+
         //黄金
         StringBuffer hj = two(sheet, 3, Sort.QIANZU, Sort.MENGJINYUAN);
         hj.insert(0,"HJ:");
@@ -69,10 +97,10 @@ public  class active {
         StringBuffer bz = one(sheet, 3, Sort.BIANZHI);
         bz.insert(0,"BZ:");
         System.out.println(bz);
-        fs.close();
+        bis.close();
     }
 // num + (day*36) - 36 -1
-    public StringBuffer two (Sheet sheet,int day,int num1,int num2){
+    public static StringBuffer two (Sheet sheet,int day,int num1,int num2){
         int i = 0;
         double sum =0.00;
         for (Cell cell : sheet.getRow((num1+(day*36)-36)-1)) {
@@ -93,7 +121,7 @@ public  class active {
         sb.append(sum/10);
         return sb;
     }
-    public StringBuffer one (Sheet sheet,int day,int num1){
+    public static StringBuffer one (Sheet sheet,int day,int num1){
         int i = 0;
         double sum =0.00;
         for (Cell cell : sheet.getRow((num1+(day*36)-36)-1)) {
