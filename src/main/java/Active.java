@@ -15,86 +15,91 @@ public  class Active {
     @Test
     public static void second() throws Exception{
         //日期
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd");
-        String format = sdf.format(date);
-        int day =Integer.parseInt(format);
+        int day = Culculation.getTime();
 
         //文件流
-        InputStream fs= new FileInputStream("C:\\Users\\admin\\Desktop\\2023年3月份每日销售统计表.xls");
+        InputStream fs= new FileInputStream(Sort.adress);
         BufferedInputStream bis = new BufferedInputStream(fs);
         Workbook workbook = new HSSFWorkbook(bis);
         Sheet sheet = workbook.getSheetAt(0);
-
         //公式格式化
         HSSFFormulaEvaluator formulaEvaluator = new HSSFFormulaEvaluator((HSSFWorkbook) workbook);
 
         //总销售
-        Cell cell = sheet.getRow(21 + (3 * 36) - 36 - 1).getCell(1);
+        Cell cell = sheet.getRow(21 + (day * 36) - 36 - 1).getCell(1);
         CellValue evaluate = formulaEvaluator.evaluate(cell);
-        double sell = Double.parseDouble(evaluate.formatAsString());
+        double sell = 0;
+        try {
+            sell = Double.parseDouble(evaluate.formatAsString());
+        } catch (Exception e) {
+            System.out.println("总销售:0");
+        }
         System.out.println("总销售:"+sell/10);
 
         //素金
-        Cell cellSj = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(204);
+        Cell cellSj = sheet.getRow(4 + (day * 36) - 36 - 1).getCell(204);
         CellValue evaluateSJ = formulaEvaluator.evaluate(cellSj);
-        double sellSj = Double.parseDouble(evaluateSJ.formatAsString());
+        double sellSj = 0;
+        try {
+            sellSj = Double.parseDouble(evaluateSJ.formatAsString());
+        } catch (Exception e) {
+            System.out.println("素金：0");
+        }
         System.out.println("素金："+sellSj/10);
 
         //非素
-        Cell cellFs = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(205);
+        Cell cellFs = sheet.getRow(4 + (day * 36) - 36 - 1).getCell(205);
         CellValue evaluateFs = formulaEvaluator.evaluate(cellFs);
-        double sellFs = Double.parseDouble(evaluateFs.formatAsString());
+        double sellFs = 0;
+        try {
+            sellFs = Double.parseDouble(evaluateFs.formatAsString());
+        } catch (Exception e) {
+            System.out.println("非素：0");
+        }
         System.out.println("非素："+sellFs/10);
 
-        //非素比
-        Cell cellFsb = sheet.getRow(4 + (3 * 36) - 36 - 1).getCell(206);
-        CellValue evaluateFsb = formulaEvaluator.evaluate(cellFsb);
-        double sellFsb = Double.parseDouble(evaluateFsb.formatAsString());
-        System.out.println("非素比："+String.format("%.2f", sellFsb*100)+"%");
-
         //黄金
-        StringBuffer hj = two(sheet, 3, Sort.QIANZU, Sort.MENGJINYUAN);
+        StringBuffer hj = two(sheet, day, Sort.QIANZU, Sort.MENGJINYUAN);
         hj.insert(0,"HJ:");
         System.out.println(hj);
         //玲珑小饰
-        StringBuffer ll = one(sheet, 3, Sort.LINGLONG);
+        StringBuffer ll = one(sheet, day, Sort.LINGLONG);
         ll.insert(0,"LL:");
         System.out.println(ll);
         //钻石
-        StringBuffer zs = one(sheet, 3, Sort.ZUANSHI);
+        StringBuffer zs = one(sheet, day, Sort.ZUANSHI);
         zs.insert(0,"ZS:");
         System.out.println(zs);
         //k金
-        StringBuffer kj = one(sheet, 3, Sort.KJIN);
+        StringBuffer kj = one(sheet, day, Sort.KJIN);
         kj.insert(0,"KJ:");
         System.out.println(kj);
         //翡翠
-        StringBuffer fc = one(sheet, 3, Sort.FEICUI);
+        StringBuffer fc = one(sheet, day, Sort.FEICUI);
         fc.insert(0,"FC:");
         System.out.println(fc);
         //硬金
-        StringBuffer yj = one(sheet, 3, Sort.YingJ);
+        StringBuffer yj = one(sheet, day, Sort.YingJ);
         yj.insert(0,"YingJ:");
         System.out.println(yj);
         //银饰
-        StringBuffer ys = one(sheet, 3, Sort.YinSHi);
+        StringBuffer ys = one(sheet, day, Sort.YinSHi);
         ys.insert(0,"YS:");
         System.out.println(ys);
         //名表
-        StringBuffer mb = one(sheet, 3, Sort.MINGBIAO);
+        StringBuffer mb = one(sheet, day, Sort.MINGBIAO);
         mb.insert(0,"MB:");
         System.out.println(mb);
         //珍珠
-        StringBuffer zz = one(sheet, 3, Sort.ZHENZHU);
+        StringBuffer zz = one(sheet, day, Sort.ZHENZHU);
         zz.insert(0,"ZZ:");
         System.out.println(zz);
         //镶嵌 黄宝
-        StringBuffer jxb = one(sheet, 3, Sort.XIANGQIAN);
+        StringBuffer jxb = one(sheet, day, Sort.XIANGQIAN);
         jxb.insert(0,"JXB:");
         System.out.println(jxb);
         //编织
-        StringBuffer bz = one(sheet, 3, Sort.BIANZHI);
+        StringBuffer bz = one(sheet, day, Sort.BIANZHI);
         bz.insert(0,"BZ:");
         System.out.println(bz);
         bis.close();
@@ -136,28 +141,5 @@ public  class Active {
         sb.append(sum/10);
         return sb;
     }
-    @Test
-    public void first(){
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-        String sDate = sdf.format(date);
-        StringBuffer first = new StringBuffer();
-        first.append(sDate);
-        first.append("\n");
-        first.append("提报人：");
-        first.append("\n");
-        first.append("LMZB总任务：");
-        System.out.println("LMZB任务：");
-        double rw = 0.0;
-        Scanner scan = new Scanner(System.in);
-        if (scan.hasNextInt()) {
-            // 判断输入的是否是整数
-            rw = scan.nextInt();
-        } else {
-            // 输入错误的信息
-            System.out.println("输入的不是整数！");
-        }
-        first.append(rw);
-        System.out.println(first);
-    }
+
 }

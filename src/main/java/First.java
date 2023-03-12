@@ -1,3 +1,10 @@
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -14,25 +21,21 @@ public class First {
         first.append("提报人：");
         System.out.println("提报人：");
         String name = sc.nextLine();
-        first.append(name); 
+        first.append(name);
 
-        first.append("\n");
-        first.append("LMZB总任务：");
-        System.out.println("LMZB任务：");
-        int rw = sc.nextInt();
-        first.append(rw);
+        try {
+            double zrw = Third.request2(1, 9);
+            System.out.println("LMZB任务:"+zrw);
 
-        first.append("\n");
-        first.append("素金任务：");
-        System.out.println("素金任务：");
-        int sj = sc.nextInt();
-        first.append(sj);
+            double sjrw = Third.request2(1, 10);
+            System.out.println("素金任务:"+sjrw);
 
-        first.append("\n");
-        first.append("非素任务：");
-        System.out.println("非素任务：");
-        int fs = sc.nextInt();
-        first.append(fs);
+            double fsrw = Third.request2(1, 11);
+            System.out.println("非素任务:"+fsrw);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         first.append("\n");
         first.append("今日目标：");
@@ -53,5 +56,5 @@ public class First {
         first.append(fsmb);
         System.out.println(first);
     }
-    
+
 }
