@@ -1,15 +1,16 @@
+package sample;
+
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import sample.Sort;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Third {
@@ -60,7 +61,7 @@ public class Third {
         System.out.println("素金累计:"+request2(1,3)/10);
 
         //非素累计
-        System.out.println("素金累计:"+request2(1,4)/10);
+        System.out.println("非素累计:"+request2(1,4)/10);
 
         //总完成率
         rate(0,1,5,"总完成率");

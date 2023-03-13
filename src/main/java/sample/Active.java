@@ -1,15 +1,16 @@
+package sample;
 
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.sql.Array;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public  class Active {
     @Test
@@ -122,7 +123,7 @@ public  class Active {
         }
         StringBuffer sb = new StringBuffer();
         sb.append(i);
-        sb.append('件');
+        sb.append("件");
         sb.append(sum/10);
         return sb;
     }
@@ -137,7 +138,7 @@ public  class Active {
         }
         StringBuffer sb = new StringBuffer();
         sb.append(i);
-        sb.append('件');
+        sb.append("件");
         sb.append(sum/10);
         return sb;
     }

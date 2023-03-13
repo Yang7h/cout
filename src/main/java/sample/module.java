@@ -1,3 +1,5 @@
+package sample;
+
 public class module {
     private Double LMZBZRW ; //罗曼珠宝总任务
     private Double SJZRW ; //素金总任务
